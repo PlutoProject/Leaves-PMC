@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Mon, 25 Mar 2024 00:26:37 +0800
+Subject: [PATCH] Don't save firework rocket entity
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
+index 5b3b59057b962438c6f4fc8a1507342865b3bc11..9a60aaa150e78a5ac939f8b83b06380a97711687 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
+@@ -355,4 +355,11 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
+     public boolean isAttackable() {
+         return false;
+     }
++
++    // PMC start - don't save firework rocket entity
++    @Override
++    public boolean shouldBeSaved() {
++        return false;
++    }
++    // PMC end
+ }
