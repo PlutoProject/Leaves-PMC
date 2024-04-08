@@ -1,0 +1,79 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Mon, 8 Apr 2024 23:24:38 +0800
+Subject: [PATCH] Ability to get player's proxy address
+
+
+diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
+index 94f4339c0876feedd896527bdb7ce2d40d61d04e..2d389432814643d7617fbcd7d41fe30e7f7e75ac 100644
+--- a/src/main/java/net/minecraft/network/Connection.java
++++ b/src/main/java/net/minecraft/network/Connection.java
+@@ -119,6 +119,10 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+     // Paper end
+     // Paper start - Optimize network
+     public boolean isPending = true;
++    // PMC start - ability to get proxy address
++    @Nullable
++    public SocketAddress proxyAddress;
++    // PMC end
+     public boolean queueImmunity;
+     // Paper end - Optimize network
+ 
+diff --git a/src/main/java/net/minecraft/server/network/ServerConnectionListener.java b/src/main/java/net/minecraft/server/network/ServerConnectionListener.java
+index 586521a2cbb1d4dcfb912029f65e4363ec7674a7..cf78e371eb64ab7128869086815c1a43194fe3e5 100644
+--- a/src/main/java/net/minecraft/server/network/ServerConnectionListener.java
++++ b/src/main/java/net/minecraft/server/network/ServerConnectionListener.java
+@@ -28,6 +28,7 @@ import io.netty.util.Timeout;
+ import io.netty.util.Timer;
+ import java.io.IOException;
+ import java.net.InetAddress;
++import java.net.InetSocketAddress;
+ import java.net.SocketAddress;
+ import java.util.Collections;
+ import java.util.Iterator;
+@@ -140,10 +141,17 @@ public class ServerConnectionListener {
+                                         String realaddress = message.sourceAddress();
+                                         int realport = message.sourcePort();
+ 
++                                        // PMC - ability to get proxy address
++                                        String proxyAddress = message.destinationAddress();
++                                        int proxyPort = message.destinationPort();
++
+                                         SocketAddress socketaddr = new java.net.InetSocketAddress(realaddress, realport);
++                                        SocketAddress proxyAddr = new InetSocketAddress(proxyAddress, proxyPort);
+ 
+                                         Connection connection = (Connection) channel.pipeline().get("packet_handler");
+                                         connection.address = socketaddr;
++                                        connection.proxyAddress = proxyAddr;
++                                        // PMC end
+                                     }
+                                 } else {
+                                     super.channelRead(ctx, msg);
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 588e1407c99a75012b234bbe5dc8560d9fa07cf0..358cb44faafb949a8b19197aad838981b5e01ff9 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -262,6 +262,23 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         }
+     }
+ 
++    // PMC start - ability to get proxy address
++    @Override
++    public @org.jetbrains.annotations.Nullable InetSocketAddress getProxyAddress() {
++        if (this.getHandle().connection == null) {
++            return null;
++        }
++
++        SocketAddress addr = this.getHandle().connection.connection.proxyAddress;
++
++        if (addr instanceof InetSocketAddress) {
++            return (InetSocketAddress) addr;
++        }
++
++        return null;
++    }
++    // PMC end
++
+     // Paper start - Implement NetworkClient
+     @Override
+     public int getProtocolVersion() {
