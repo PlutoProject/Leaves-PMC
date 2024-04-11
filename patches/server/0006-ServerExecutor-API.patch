@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Thu, 11 Apr 2024 10:50:22 +0800
+Subject: [PATCH] ServerExecutor API
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 45d00bd974866a42fe335946b5a274fa60629633..483ee6aa41a514ad02488e0a64df2ac3355cc3d6 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -37,6 +37,7 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.Set;
+ import java.util.UUID;
++import java.util.concurrent.Executor;
+ import java.util.function.Consumer;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
+@@ -255,6 +256,7 @@ import org.bukkit.scoreboard.Criteria;
+ import org.bukkit.structure.StructureManager;
+ import org.bukkit.util.StringUtil;
+ import org.bukkit.util.permissions.DefaultPermissions;
++import org.jetbrains.annotations.NotNull;
+ import org.yaml.snakeyaml.LoaderOptions;
+ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.SafeConstructor;
+@@ -3288,4 +3290,12 @@ public final class CraftServer implements Server {
+         return photographerManager;
+     }
+     // Leaves end - replay mod api
++
++
++    // PMC start - ServerExecutor API
++    @Override
++    public @NotNull Executor getServerExecutor() {
++        return getServer();
++    }
++    // PMC end
+ }

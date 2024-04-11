@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Thu, 11 Apr 2024 10:50:22 +0800
+Subject: [PATCH] ServerExecutor API
+
+
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 6487dbde351c6f584ca274e5130c2c6e89d32545..dcd2618effb54bfe3862ad65a1919ebcf4d8856b 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -12,6 +12,7 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
+ import java.util.UUID;
++import java.util.concurrent.Executor;
+ import java.util.function.Consumer;
+ import java.util.logging.Logger;
+ import org.bukkit.Warning.WarningState;
+@@ -2534,4 +2535,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     // Leaves start - Photographer API
+     @NotNull PhotographerManager getPhotographerManager();
+     // Leaves end - Photographer API
++
++    // PMC start - ServerExecutor API
++    /**
++     * Returns the server instance as an Executor.
++     *
++     * @return Server executor
++     */
++    @NotNull Executor getServerExecutor();
++    // PMC end - ServerExecutor API
+ }
