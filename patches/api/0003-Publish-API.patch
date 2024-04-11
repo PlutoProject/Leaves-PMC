@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Thu, 11 Apr 2024 12:01:50 +0800
+Subject: [PATCH] Publish API
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 0a49ee83f14513ca57cfcafd014c9cfba26de044..816b72009cdd7fad03a3deaed5eb70c78f896228 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -214,12 +214,14 @@ tasks.check {
+ // Paper end
+ 
+ // Leaves start - publish api
++// PMC start - publish api
+ publishing {
+     repositories {
+-        maven("https://repo.leavesmc.top/snapshots") {
+-            name = "leaves"
++        maven("https://maven.nostal.ink/repository/maven-snapshots/") {
++            name = "pmc"
+             credentials(PasswordCredentials::class)
+         }
+     }
+ }
++// PMC end - publish api
+ // Leaves end - publish api
+\ No newline at end of file
