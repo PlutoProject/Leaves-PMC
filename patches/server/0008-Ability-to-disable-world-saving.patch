@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Mon, 22 Apr 2024 21:57:08 +0800
+Subject: [PATCH] Ability to disable world saving
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index e29667480aec47ebf729321747e43bacf45b43f2..2bc0d11437f5e5d8afebee8876b4c91a57cefc75 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -184,6 +184,7 @@ import org.bukkit.Bukkit;
+ import org.bukkit.craftbukkit.CraftServer;
+ import org.bukkit.craftbukkit.Main;
+ import org.bukkit.event.server.ServerLoadEvent;
++import top.leavesmc.leaves.LeavesConfig;
+ // CraftBukkit end
+ 
+ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements ServerInfo, CommandSource, AutoCloseable {
+@@ -866,6 +867,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         return this.saveAllChunks(suppressLogs, flush, force, false);
+     }
+     public boolean saveAllChunks(boolean suppressLogs, boolean flush, boolean force, boolean close) {
++        // PMC start - ability to disable world saving
++        if (LeavesConfig.disableWorldSaving) {
++            return true;
++        }
++        // PMC end - ability to disable world saving
++
+         // Paper end - rewrite chunk system - add close param
+         boolean flag3 = false;
+ 
+diff --git a/src/main/java/top/leavesmc/leaves/LeavesConfig.java b/src/main/java/top/leavesmc/leaves/LeavesConfig.java
+index 19ee86e42d92c33cb7e35ba07927883d4c979913..d62263b16a23fc1b786c0e7692d5554ab112f68b 100644
+--- a/src/main/java/top/leavesmc/leaves/LeavesConfig.java
++++ b/src/main/java/top/leavesmc/leaves/LeavesConfig.java
+@@ -922,4 +922,9 @@ public final class LeavesConfig {
+     public static boolean vanillaHopper = false;
+ 
+     // Leaves end - region
++
++    // PMC start - ability to disable world saving
++    @GlobalConfig(name = "disable-world-saving", category = {"misc"})
++    public static boolean disableWorldSaving = false;
++    // PMC end - ability to disable world saving
+ }
