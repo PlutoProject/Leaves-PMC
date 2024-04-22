@@ -5,7 +5,7 @@ Subject: [PATCH] ServerExecutor API
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 6487dbde351c6f584ca274e5130c2c6e89d32545..dcd2618effb54bfe3862ad65a1919ebcf4d8856b 100644
+index d465633aab75def37a2b4a9f2a034071970c1dfa..a191bbac0fde6fe43894a910558ac0bb5ec56f3b 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -12,6 +12,7 @@ import java.util.List;
@@ -16,7 +16,7 @@ index 6487dbde351c6f584ca274e5130c2c6e89d32545..dcd2618effb54bfe3862ad65a1919ebc
  import java.util.function.Consumer;
  import java.util.logging.Logger;
  import org.bukkit.Warning.WarningState;
-@@ -2534,4 +2535,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2540,4 +2541,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      // Leaves start - Photographer API
      @NotNull PhotographerManager getPhotographerManager();
      // Leaves end - Photographer API
