@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Mon, 29 Apr 2024 23:31:25 +0800
+Subject: [PATCH] Don't save falling block entity
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/item/FallingBlockEntity.java b/src/main/java/net/minecraft/world/entity/item/FallingBlockEntity.java
+index a52c2fc38fd97ffa1684270443646d605ec35830..00cea8f665f4f1519c9b0d348658f3b259aab280 100644
+--- a/src/main/java/net/minecraft/world/entity/item/FallingBlockEntity.java
++++ b/src/main/java/net/minecraft/world/entity/item/FallingBlockEntity.java
+@@ -403,4 +403,11 @@ public class FallingBlockEntity extends Entity {
+         this.setPos(d0, d1, d2);
+         this.setStartPos(this.blockPosition());
+     }
++
++    // PMC start - don't save falling block entity
++    @Override
++    public boolean shouldBeSaved() {
++        return false;
++    }
++    // PMC end - don't save falling block entity
+ }

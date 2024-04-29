@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Mon, 29 Apr 2024 23:30:21 +0800
+Subject: [PATCH] Don't save primed tnt entity
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java b/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
+index 6c6c953b2ea5b461ec8ed9a8adf0d28c78ea21d9..97675044844e1afa7590c1f0c7d975cfa53c8cc2 100644
+--- a/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
++++ b/src/main/java/net/minecraft/world/entity/item/PrimedTnt.java
+@@ -200,4 +200,11 @@ public class PrimedTnt extends Entity implements TraceableEntity {
+         return !level().paperConfig().fixes.preventTntFromMovingInWater && super.isPushedByFluid();
+     }
+     // Paper end - Option to prevent TNT from moving in water
++
++    // PMC start - don't save primed tnt entity
++    @Override
++    public boolean shouldBeSaved() {
++        return false;
++    }
++    // PMC end - don't save primed tnt entity
+ }
